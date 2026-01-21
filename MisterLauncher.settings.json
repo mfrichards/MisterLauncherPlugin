@@ -1,0 +1,32 @@
+{
+  "Mister": {
+    "ApiUrl": "http://mister:8182"
+  },
+  "PostLaunchCommand": {
+    "FileName": "py",
+    "Arguments": "Plugins\\Scripts\\relay.py COM3",
+    "DelayMs": 500
+  },
+  "Consoles": [
+    "Atari 2600:Atari2600",
+    "Atari 5200:Atari5200",
+    "Atari 7800:Atari7800",
+    "Atari Lynx:AtariLynx",
+    "ColecoVision:ColecoVision",
+    "Sega Genesis:Genesis",
+    "Mattel Intellivision:Intellivision",
+    "Sega CD:MegaCD",
+    "Nintendo 64:Nintendo64",
+    "Nintendo Entertainment System:NES",
+    "Sony Playstation:PSX",
+    "Sega 32X:Sega32X",
+    "Sega Saturn:Saturn",
+    "Sega Master System:MasterSystem",
+    "NEC TurboGrafx-16:TurboGrafx16",
+    "NEC TurboGrafx-CD:TurboGrafx16CD"
+  ],
+  "Computers": [
+    "Commodore 64:C64",
+    "Commodore VIC-20:VIC20"
+  ]
+}
