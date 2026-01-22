@@ -102,8 +102,7 @@ namespace MisterLauncherPlugin
                 if (platform != null)
                 {
                     var filename = Path.GetFileNameWithoutExtension(selectedGame.ApplicationPath);
-                    var ext = Path.GetExtension(selectedGame.ApplicationPath);
-                    var misterGames = FindConsoleGames(platform, filename, ext);
+                    var misterGames = FindConsoleGames(platform, filename);
                     foreach (var game in misterGames)
                     {
                         items.Add(new MisterEmulatorMenuItem(appConfig, httpClient, game));
@@ -161,7 +160,7 @@ namespace MisterLauncherPlugin
             return games;
         }
 
-        private IEnumerable<MisterGame> FindConsoleGames(string platform, string filename, string ext)
+        private IEnumerable<MisterGame> FindConsoleGames(string platform, string filename)
         {
             List<MisterGame> games = new List<MisterGame>();
             var gameTitle = filename.Split("(")[0].Trim();
@@ -186,6 +185,7 @@ namespace MisterLauncherPlugin
                             var version = index > 0 ? item.name.Substring(index).Trim() : "";
                             if (title.Equals(gameTitle, StringComparison.OrdinalIgnoreCase))
                             {
+                                var ext = Path.GetExtension(item.path) ?? "";
                                 if (computers.Contains(platform) && ext.Length > 1)
                                 {
                                     version = $"{version} [{ext.Substring(1)}]".Trim();
