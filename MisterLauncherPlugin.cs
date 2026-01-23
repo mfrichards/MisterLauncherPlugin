@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net.Http.Headers;
@@ -163,7 +164,7 @@ namespace MisterLauncherPlugin
         private IEnumerable<MisterGame> FindConsoleGames(string platform, string filename)
         {
             List<MisterGame> games = new List<MisterGame>();
-            var gameTitle = filename.Split("(")[0].Trim();
+            var (gameTitle, _) = splitName(filename);
 
             try
             {
@@ -180,9 +181,7 @@ namespace MisterLauncherPlugin
                 {
                     foreach (var item in searchResult.data) {
                         if (item.name != null) {
-                            int index = item.name.IndexOf("(");
-                            var title = index > 0 ? item.name.Substring(0, index).Trim() : item.name;
-                            var version = index > 0 ? item.name.Substring(index).Trim() : "";
+                            var (title, version) = splitName(item.name);
                             if (title.Equals(gameTitle, StringComparison.OrdinalIgnoreCase))
                             {
                                 var ext = Path.GetExtension(item.path) ?? "";
@@ -209,7 +208,18 @@ namespace MisterLauncherPlugin
             games.Sort();
             return games;
         }
+
+        private (string, string) splitName(string name)
+        {
+            int index1 = name.IndexOf("(");
+            int index2 = name.IndexOf("[");
+            int index = index1 >= 0 && (index2 < 0 || index1 < index2) ? index1 : index2;
+            var title = index > 0 ? name.Substring(0, index).Trim() : name;
+            var version = index > 0 ? name.Substring(index).Trim() : "";
+            return (title, version);
+        }
     }
+
 
     public class MisterSearchResponse
     {
