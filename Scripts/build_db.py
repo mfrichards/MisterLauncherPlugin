@@ -3,8 +3,8 @@ import sys
 import os
 
 # Customize these variables to match LaunchBox and MiSTer installations.
-mame_xml_file = r"C:\\LaunchBox\Metadata\MAME.xml"
-db_file_name = r"C:\\LaunchBox\Metadata\arcade.db"
+mame_xml_file = r"E:\\LaunchBox\Metadata\MAME.xml"
+db_file_name = r"E:\\LaunchBox\Metadata\arcade.db"
 mister_share_path = r"\\mister\sdcard"
 mister_actual_path = r"/media/fat"
 db_batch_size = 20
@@ -124,7 +124,10 @@ def normalize_name(name):
                .replace("puckman", "pac-man")
     
 def normalize_path(path):
-    return path.replace(mister_share_path, mister_actual_path).replace("\\", "/")
+    npath = path.replace(mister_share_path, "").replace("\\", "/").strip()
+    if (npath.startswith("/")):
+        return npath[1:]
+    return npath
     
 def process_game(db, setname, desc, name, version, year):
     global values

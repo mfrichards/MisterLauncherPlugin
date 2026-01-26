@@ -28,6 +28,7 @@ namespace MisterLauncherPlugin
         public int ApiTimeoutMs { get; set; } = 2000;
         public bool TriggerAutosave { get; set; } = true;
         public int AutosaveTimeMs { get; set; } = 3000;
+        public string ArcadePath { get; set; } = "/media/fat";
     }
 
     public class CommandConfig
@@ -347,6 +348,16 @@ namespace MisterLauncherPlugin
             get { return misterIcon; }
         }
 
+        private String formatPath(string path)
+        {
+            if (path.StartsWith("_Arcade"))
+            {
+                var basePath = appConfig.Mister.ArcadePath.Trim();
+                return basePath.EndsWith("/") ? $"{basePath}{path}" : $"{basePath}/{path}";
+            }
+            return path;
+        }
+
         async public void OnSelect(params IGame[] games)
         {
             if (game.Path != null && game.Path.Length > 0)
@@ -365,7 +376,7 @@ namespace MisterLauncherPlugin
                     }
 
                     // Launch the game.
-                    var response = await httpClient.PostAsJsonAsync("/api/games/launch", new { path = game.Path });
+                    var response = await httpClient.PostAsJsonAsync("/api/games/launch", new { path = formatPath(game.Path) });
                     response.EnsureSuccessStatusCode();
 
                     // Run the post launch command, if necessary.

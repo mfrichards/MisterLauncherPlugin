@@ -1,6 +1,7 @@
 {
   "Mister": {
-    "ApiUrl": "http://mister:8182"
+    "ApiUrl": "http://mister:8182",
+    "ArcadePath": "/media/fat"
   },
   "PostLaunchCommand": {
     "FileName": "py",
@@ -13,13 +14,14 @@
     "Atari 7800:Atari7800",
     "Atari Lynx:AtariLynx",
     "ColecoVision:ColecoVision",
-    "Sega Genesis:Genesis",
     "Mattel Intellivision:Intellivision",
-    "Sega CD:MegaCD",
     "Nintendo 64:Nintendo64",
     "Nintendo Entertainment System:NES",
+    "Super Nintendo Entertainment System:SNES",
     "Sony Playstation:PSX",
     "Sega 32X:Sega32X",
+    "Sega CD:MegaCD",
+    "Sega Genesis:Genesis",
     "Sega Saturn:Saturn",
     "Sega Master System:MasterSystem",
     "NEC TurboGrafx-16:TurboGrafx16",
