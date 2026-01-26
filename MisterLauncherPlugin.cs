@@ -48,9 +48,16 @@ namespace MisterLauncherPlugin
 
         static MisterLauncherPlugin()
         {
-            string jsonConfig = File.ReadAllText(@"Plugins\MisterLauncher.settings.json");
-            var config = JsonSerializer.Deserialize<AppConfig>(jsonConfig);
-            appConfig = config == null ? new AppConfig() : config;
+            try
+            {
+                string jsonConfig = File.ReadAllText(@"Plugins\MisterLauncher.settings.json");
+                appConfig = JsonSerializer.Deserialize<AppConfig>(jsonConfig) ?? new AppConfig();
+            }
+            catch (Exception ex)
+            {
+                // App config missing or invalid - use default values.
+                appConfig = new AppConfig();
+            }
 
             platformMap = new Dictionary<string, string>();
             computers = new HashSet<string>();

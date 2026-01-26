@@ -6,14 +6,12 @@ import os
 mame_xml_file = r"E:\\LaunchBox\Metadata\MAME.xml"
 db_file_name = r"E:\\LaunchBox\Metadata\arcade.db"
 mister_share_path = r"\\mister\sdcard"
-mister_actual_path = r"/media/fat"
 db_batch_size = 20
 
 # Folders to scan under the main "_Arcade" folder.
-# Note: The "_Arcade" folder is always scanned first and those games
-#       are marked as the "default" version.
-# Note: After scanning "_Arcade" and "_alternatives", almost all games
-#       found elsewhere (i.e. under "_Organized") will be duplicates.
+# Note: The "_Arcade" folder is always scanned first and those games are marked as the "default" version.
+# Note: After scanning "_Arcade" and "_alternatives", almost all games found elsewhere
+#  (i.e. under "_Organized") will be duplicates.
 folders_to_scan = [
     r"_alternatives",
     r"_Organized\_1 0-9",
@@ -117,6 +115,14 @@ def insert_data(db, data):
              VALUES(?,?,?,?,?)"""
     db_update(db, sql, data)
     
+def split_desc(desc):
+    index1 = desc.find("(")
+    index2 = desc.find("[")
+    index = index1 if (index2 < 0 or (index1 >= 0 and index1 < index2)) else index2
+    name = desc[:index].strip() if (index > 0) else desc
+    version = desc[index:].strip() if (index > 0) else ""
+    return (name, version)
+
 def normalize_name(name):
     name = name.lower()
     return name.replace("q'bert", "q*bert") \
@@ -135,10 +141,7 @@ def process_game(db, setname, desc, name, version, year):
     if (desc == ""):
         desc = f"{name} {version}".strip()
     elif (name == ""):
-        parts = desc.split("(", 1)
-        name = parts[0].strip()
-        if (len(parts) > 1):
-            version = f"({parts[1]}".strip()
+        (name, version) = split_desc(desc)
     values.append((setname, desc, normalize_name(name), version, year))
     print(f"Game: {setname} -> {desc}")
     mame_game_count += 1
@@ -220,9 +223,7 @@ def process_mra_file(fullpath, fname, db):
             # Split name and version.
             index1 = fname.rfind(".")
             desc = fname[:index1]
-            index2 = desc.find("(")
-            name = desc[:index2].strip() if (index2 > 0) else desc
-            version = desc[index2:].strip() if (index2 > 0) else ""
+            (name, version) = split_desc(desc)
 
             # Save bootlegs and homebrews to process at the end.
             if (bootleg):
