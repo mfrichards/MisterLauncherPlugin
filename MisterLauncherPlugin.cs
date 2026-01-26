@@ -127,11 +127,11 @@ namespace MisterLauncherPlugin
             List<MisterGame> games = new List<MisterGame>();
             using (var con = new SqliteConnection(@"Data Source=Metadata\arcade.db"))
             {
-
                 con.Open();
                 var cmd = con.CreateCommand();
                 MisterGame? defaultGame = null;
 
+                // Find exact match for the game by setname in arcade database.
                 cmd.CommandText = "SELECT setname,name,version,description,path,is_default from games " +
                                   "WHERE setname = $set";
                 cmd.Parameters.AddWithValue("$set", setname);
@@ -148,6 +148,7 @@ namespace MisterLauncherPlugin
                     }
                 }
 
+                // If a match was found for the game, find all other versions with the same name.
                 if (defaultGame != null && defaultGame.Name.Length > 0)
                 {
                     cmd.CommandText = "SELECT setname,name,version,description,path,is_default from games " +
@@ -176,7 +177,7 @@ namespace MisterLauncherPlugin
 
             try
             {
-                // Search for game.
+                // Find all games which match the name.
                 var json = JsonSerializer.Serialize(new { query = gameTitle, system = platform });
                 var request = new HttpRequestMessage(HttpMethod.Post, "/api/games/search")
                 {
