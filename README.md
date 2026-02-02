@@ -88,13 +88,13 @@ if necessary):
  1. For the plugin to operate correctly, you must initiate an `index` operation using the remote API on the MiSTer:
     * `curl -X POST 'http://mister:8182/api/games/index'`
     * Or in Windows PowerShell: `Invoke-RestMethod -Uri http://mister:8182/api/games/index -Method POST`
-    * You only need to do this once initially, and then again whenever you add or remove rom files to your rom folders.
+    * You only need to do this once initially, and then again whenever you add or remove files in your rom folders.
 
-3. Now open LaunchBox (or BigBox), and when you select a game (right click on a game in LB, or go to the detail page
-for a game in BogBox), if that game is also found on the MiSTer, you should see a menu item at the bottom of the
+3. Now open LaunchBox (or BigBox), and when you select a game (right click on a game in LaunchBox, or go to the
+detail page for a game in BigBox), if that game is also found on the MiSTer, you should see a menu item at the bottom of the
 menu to `Launch <game version> on MiSTer...`. If multiple versions of the game are found on the MiSTer, there will
 be multiple menu items.
 
 ## Advanced Configuration
 
-==TODO==
+TODO
